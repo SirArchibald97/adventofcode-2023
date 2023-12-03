@@ -1,4 +1,5 @@
 from operator import itemgetter
+import re
 
 def day1p1():
     file = open("day1/data.txt", "r")
@@ -37,20 +38,14 @@ def day1p2():
         "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6" : 6, "7": 7, "8": 8, "9": 9            
     }
 
-    for line in ["two934seven1", "sgoneightfoureight5sevenjzsqghg"]:
-        tokens = []
+    for line in data:
+        regexFirst = re.compile(r'(one)|(two)|(three)|(four)|(five)|(six)|(seven)|(eight)|(nine)|(1)|(2)|(3)|(4)|(5)|(6)|(7)|(8)|(9)')
+        regexLast = re.compile(r'(eno)|(owt)|(eerht)|(ruof)|(evif)|(xis)|(neves)|(thgie)|(enin)|(1)|(2)|(3)|(4)|(5)|(6)|(7)|(8)|(9)')
 
-        for letter in line:
-            if letter.isnumeric():
-                tokens.append([letter, line.index(letter)]);
-
-        for letter in line:
-            for number in numbers:
-                substring = line[line.index(letter):line.index(letter) + len(number)]
-                print(substring, number)
-                if substring == number:
-                    tokens.append(number)
-        
-        print(line, tokens)
+        first = re.search(regexFirst, line)
+        last = re.search(regexLast, line[::-1])
+        number = str(numbers[first.group()]) + str(numbers[last.group()[::-1]])
+        print(line + " ==> " + number)
+        total += int(number)
 
     print(total)
